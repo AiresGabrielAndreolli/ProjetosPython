@@ -5,6 +5,7 @@ numPc = 0
 tentativas = 0
 
 def criaLayoutInicial():
+    bt_tente.config(state="normal")
     lb_pensei.place_forget()
     entrada.place_forget()
     lb_adivinhe["text"] = "Adivinhe o número!"
@@ -45,6 +46,7 @@ def adivinha():
     entrada.select_range(0, END)
     if numPc == num:
         lb_feedback["text"] = "Acertou em " + str(tentativas) + " tentativas"
+        bt_tente.config(state="disabled")
     elif numPc > num:
         lb_feedback["text"] = "O meu número é maior"
     else:

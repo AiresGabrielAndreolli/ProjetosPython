@@ -2,23 +2,32 @@ from tkinter import *
 from random import randint
 
 numPc = 0
+tentativas = 0
 
 def criaLayoutInicial():
-    
+    lb_pensei.place_forget()
+    entrada.place_forget()
     lb_adivinhe["text"] = "Adivinhe o número!"
-    lb_pensei["text"] = "Pensei em um número"
     lb_adivinhe.place(x=100, y=30, anchor="center")
     bt_tente.place(x=105, y=50)    
     bt_quit.place(x=45, y=50)
+    bt_quit["command"] = janelaPrincipal.destroy
     bt_tente["command"] = criaLayoutAdivinha
+    bt_tente["text"] = "TENTE"
+    bt_quit["text"] = "QUIT"
+    lb_feedback.place_forget()
+    entrada.delete(0, END)
 
 def criaLayoutAdivinha():
     global numPc
     numPc = randint(1, 100)
+    lb_pensei["text"] = "Pensei em um número"
     lb_adivinhe["text"] = "Adivinhe qual é!"
     bt_tente["text"] = "CHUTE"
     bt_tente["command"] = adivinha
-    lb_feedback = Label(janelaPrincipal, text="Esperando")
+    bt_quit["command"] = criaLayoutInicial
+    bt_quit["text"] = "VOLTAR"
+    lb_feedback["text"] = "Esperando"
     lb_pensei.place(x=100, y=40, anchor="center")
     lb_adivinhe.place(x=100, y=60, anchor="center")
     entrada.place(x=100, y=100, anchor="center")
@@ -29,10 +38,17 @@ def criaLayoutAdivinha():
     
 
 def adivinha():
+    global tentativas
+    tentativas+=1
     num = entrada.get()
     num = entrada.getint(num)
-#    if numPc == 
-    
+    entrada.select_range(0, END)
+    if numPc == num:
+        lb_feedback["text"] = "Acertou em " + str(tentativas) + " tentativas"
+    elif numPc > num:
+        lb_feedback["text"] = "O meu número é maior"
+    else:
+        lb_feedback["text"] = "O meu número é menor"
     
     
 
@@ -50,7 +66,7 @@ lb_adivinhe = Label(janelaPrincipal)
 lb_pensei = Label(janelaPrincipal)
 bt_tente = Button(janelaPrincipal, text="VAMOS", width=6, height=1)
 bt_quit = Button(janelaPrincipal, text="QUIT", command=janelaPrincipal.destroy, width=6, height=1)
-
+lb_feedback = Label(janelaPrincipal)
 
 criaLayoutInicial()
 
